@@ -277,8 +277,9 @@ var solveSudoku = function(board) {
       }
     }
     colIntersectQuadKeys = colIntersectQuadKeys.filter(key => key !== getQuad(coord))
-    console.log(rowIntersectQuadKeys, colIntersectQuadKeys);
+    // console.log(rowIntersectQuadKeys, colIntersectQuadKeys);
     return {
+      quad: getQuad(coord),
       quadOriginNeeds: quadrants[getQuad(coord)].needed,
       row: {
         needs: rowsAndCols[numToText_ViseVersa(coord[0])].row.needed,
@@ -304,6 +305,17 @@ var solveSudoku = function(board) {
     })
   }
 
+  function getReducedNeedsRow(needs, info) {
+    const compare = [needs, info.row.intersection1Has, info.row.intersection2Has]
+    return compare.reduce((prev, curr) => {
+      return prev.filter(n => {
+        if(curr.includes(n)){
+          return n
+        }
+      })
+    })
+  }
+
   ///As it is solved, the info in the objects need to update.
   (function solveIt() {
     // noValues.forEach((blank, i) => {
@@ -313,12 +325,16 @@ var solveSudoku = function(board) {
     let current = noValues[i]; //[row,col]
     console.log('current: ', current);
     console.log(getRelevantInfo(current));
-    console.log('solving it');
-
+    console.log('solving it', noValues.length);
+    // noValues
     const info = getRelevantInfo(current)
-    console.log(getIntersectNeeds(info));
-
-        // setBoardCoord(current, '3', i, 'bottomRight')
+    let currentNeeds = getIntersectNeeds(info);
+    let reducedRowNeeds = getReducedNeedsRow(currentNeeds, info)
+    // console.log(reducedRowNeeds);
+    if(reducedRowNeeds.length === 1){
+      setBoardCoord(current, reducedRowNeeds[0], i, info.quad)
+      console.log(noValues.length);
+    }
   })();
 
 
