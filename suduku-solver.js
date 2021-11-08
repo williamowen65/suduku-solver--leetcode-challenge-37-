@@ -111,8 +111,9 @@ var solveSudoku = function(board) {
     }
   }
 
+  const noValues = [];
 
-  (function getRowsAndCols(){
+  (function getRowsAndColsAndNoValues(){
     for(const prop in rowsAndCols){
       
       //get col
@@ -128,10 +129,16 @@ var solveSudoku = function(board) {
        }
        { 
         const value = board[otherRowOrCol][current] === '.' ? null : board[otherRowOrCol][current]
-          if(value){
-            rowsAndCols[prop].col.exist.push(board[otherRowOrCol][current])
-          }
-       }
+        if(value){
+          rowsAndCols[prop].col.exist.push(board[otherRowOrCol][current])
+        }
+      }
+      {
+        const noValue = board[otherRowOrCol][current] === '.' ? [otherRowOrCol, current] : null
+        if(noValue){
+          noValues.push(noValue);
+        }
+      }
        
           otherRowOrCol++
       }
@@ -159,6 +166,7 @@ var solveSudoku = function(board) {
   // for(const prop in quadrants){
   //   completeBoard[prop] = {}
   // }
+  
 
 
   function numToText_ViseVersa(input){
@@ -213,13 +221,15 @@ var solveSudoku = function(board) {
   }
 
   function setBoardCoord(coord, val){
-    board[coord[0]][coord[1]] = val
+    if(board[coord[0]][coord[1]] === '.'){
+      board[coord[0]][coord[1]] = val
+    }
   }
 
 
   ///As it is solved, the info in the objects need to update.
   (function solveIt() {
-    let current = [0,4]; //[row,col]
+    let current = noValues[0]; //[row,col]
 
     console.log('solving it');
     for(const prop in quadrants){
