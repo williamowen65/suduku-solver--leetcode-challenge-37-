@@ -251,6 +251,9 @@ var solveSudoku = function(board) {
 
   ///As it is solved, the info in the objects need to update.
   (function solveIt() {
+    noValues.forEach((blank, i) => {
+      console.log(blank);
+    })
     let i = 1;
     let current = noValues[i]; //[row,col]
 
@@ -267,7 +270,7 @@ var solveSudoku = function(board) {
         // }
     }
     for(const prop in rowsAndCols){
-        console.log(prop, rowsAndCols[prop]);
+        // console.log(prop, rowsAndCols[prop]);
     }
         // console.log(noValues);
         setBoardCoord(current, '1', i, 'bottomRight')
