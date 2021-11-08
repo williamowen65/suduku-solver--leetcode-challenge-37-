@@ -81,25 +81,65 @@ var solveSudoku = function(board) {
   }
 
   const rowsAndCols = {};
-
- (function getRowsAndCols(){
-    for(const prop in rowsAndColsDefinitions){
-      rowsAndCols[prop] = {
-        definition: rowsAndColsDefinitions[prop],
-        row: {
-          exist: [],
-          needed: []
-        },
-        col: {
-          exist: [],
-          needed: []
-        },
-        
-      }
+  for(const prop in rowsAndColsDefinitions){
+    rowsAndCols[prop] = {
+      definition: rowsAndColsDefinitions[prop],
+      row: {
+        exist: [],
+        needed: []
+      },
+      col: {
+        exist: [],
+        needed: []
+      },
     }
- })()
+  }
 
- console.log(rowsAndCols);
+
+  (function getRowsAndCols(){
+    for(const prop in rowsAndCols){
+      
+      //get col
+      let current = rowsAndCols[prop].definition[0]
+      let otherRowOrCol = 0
+      while(otherRowOrCol <= 8){
+        // console.log(current);
+       { 
+        const value = board[current][otherRowOrCol] === '.' ? null : board[current][otherRowOrCol]
+          if(value){
+            rowsAndCols[prop].row.exist.push(board[current][otherRowOrCol])
+          }
+       }
+       { 
+        const value = board[otherRowOrCol][current] === '.' ? null : board[otherRowOrCol][current]
+          if(value){
+            rowsAndCols[prop].col.exist.push(board[otherRowOrCol][current])
+          }
+       }
+       
+          otherRowOrCol++
+      }
+
+
+      const neededValues = ['1','2','3','4','5','6','7','8','9']
+      for(const prop in rowsAndCols){
+        rowsAndCols[prop].row.needed = neededValues.filter(value => {
+          return !rowsAndCols[prop].row.exist.find((el)=> el === value)
+        })
+        rowsAndCols[prop].col.needed = neededValues.filter(value => {
+          return !rowsAndCols[prop].col.exist.find((el)=> el === value)
+        })
+      }
+
+
+
+      //get row
+      console.log(prop);
+      console.log('row: ', rowsAndCols[prop].row);
+      console.log('col: ', rowsAndCols[prop].col);
+    }
+  })()
+
 
   console.table(board)
   
