@@ -17,11 +17,15 @@ var solveSudoku = function(board) {
     quadrants[prop] = {
       definition: quadrantsDefinitions[prop],
       exist: [],
-      needed: []
+      needed: [],
+      intersection: {
+        rows: [],
+        cols: []
+      }
     }
   }
 
- (function getExistAndNeeded(){
+ (function getQuadrants(){
     // console.log('get existing numbers in quad');
     for(const prop in quadrants){
       const start = quadrants[prop].definition[0]
@@ -35,10 +39,11 @@ var solveSudoku = function(board) {
         // console.log(currentRow, currentCol, end);
         // console.log(board[currentRow][currentCol]);
 
+        
+
         //log the current value 
         const value = board[currentRow][currentCol] === '.' ? null : board[currentRow][currentCol]
         if(value){
-
           quadrants[prop].exist.push(board[currentRow][currentCol])
         }
 
@@ -46,8 +51,19 @@ var solveSudoku = function(board) {
         //Go to next block within quadrant
         if(currentRow === end[0] && currentCol < end[1]){
           currentRow = start[0]
+          
+          
           currentCol++
         } else {
+          //set row and col intersections
+          if(!quadrants[prop].intersection.rows.includes(currentRow)){
+            quadrants[prop].intersection.rows.push(currentRow)
+          }
+          if(!quadrants[prop].intersection.cols.includes(currentCol)){
+            quadrants[prop].intersection.cols.push(currentCol)
+          }
+
+
           currentRow++
         }
       }
@@ -66,7 +82,7 @@ var solveSudoku = function(board) {
   // console.log(quadrants);
   // console.log(quadrantsDefinitions);
 
-  console.log('get existing numbers in rows and col');
+  // console.log('get existing numbers in rows and col');
 
   const rowsAndColsDefinitions = {
    one: [0, [0,8]],
@@ -140,13 +156,16 @@ var solveSudoku = function(board) {
 
   (function solveIt() {
     console.log('solving it');
+    for(const prop in quadrants){
+      console.log(prop, quadrants[prop]);
+    }
   })();
 
 
 
   // console.log(quadrants);
   // console.log(rowsAndCols);
-  console.table(board)
+  // console.table(board)
   
 };
 
