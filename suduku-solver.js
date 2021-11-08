@@ -220,32 +220,50 @@ var solveSudoku = function(board) {
     }
   }
 
-  function setBoardCoord(coord, val){
+  function setBoardCoord(coord, val, noValI, quad){
+
+    //Set board
     if(board[coord[0]][coord[1]] === '.'){
       board[coord[0]][coord[1]] = val
     }
+
+    //update NoValues
+      noValues.splice(noValI, 1)
+
+    //update quadrant
+      //add to exist
+    quadrants[quad].exist.push(val)
+      //remove from needed
+    quadrants[quad].needed.splice(quadrants[quad].needed.indexOf(val), 1)
+    
+    // console.log(quadrants[quad]);
+
+    //update row/col
   }
 
 
   ///As it is solved, the info in the objects need to update.
   (function solveIt() {
-    let current = noValues[0]; //[row,col]
+    let i = 1;
+    let current = noValues[i]; //[row,col]
 
     console.log('solving it');
     for(const prop in quadrants){
       ///if current is within quadrant run checks of needed values
       if(quadrants[prop].intersection.rows.includes(current[0])){
-        console.log(prop, quadrants[prop].needed);
-        console.log(numToText_ViseVersa(current[0]), rowsAndCols[numToText_ViseVersa(current[0])].row.needed);
+        // console.log(prop, quadrants[prop].needed);
+        // console.log(numToText_ViseVersa(current[0]), rowsAndCols[numToText_ViseVersa(current[0])].row.needed);
+        console.log(prop, quadrants[prop]);
       }
       // if(quadrants[prop].intersection.cols.includes(current[1])){
-      //   console.log(prop, quadrants[prop]);
-      // }
-    }
-    // for(const prop in rowsAndCols){
-    //   console.log(prop, rowsAndCols[prop]);
-    // }
-    setBoardCoord(current, '12')
+        //   console.log(prop, quadrants[prop]);
+        // }
+      }
+      // for(const prop in rowsAndCols){
+        //   console.log(prop, rowsAndCols[prop]);
+        // }
+        // console.log(noValues);
+        setBoardCoord(current, '1', i, 'bottomRight')
   })();
 
 
