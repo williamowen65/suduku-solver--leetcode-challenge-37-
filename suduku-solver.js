@@ -21,9 +21,19 @@ var solveSudoku = function(board) {
       intersection: {
         rows: [],
         cols: []
+      },
+      blocks: {
+        row: [0,0,0],
+        col: [0,0,0]
       }
     }
   }
+
+  function blocksCheck(coords) {
+    console.log(coords, getQuad(coords));
+    
+  }
+
 
  (function getQuadrants(){
     // console.log('get existing numbers in quad');
@@ -77,6 +87,8 @@ var solveSudoku = function(board) {
       }
 
     }
+
+    // blocksCheck()
   })()
 
   // console.log(quadrants);
@@ -260,6 +272,10 @@ var solveSudoku = function(board) {
   }
 
   function getRelevantInfo(coord){
+
+    // adds data per request to this data
+
+
     // console.log(coord);
     // getQuad(coord)
     // let quadOriginNeeds 
@@ -307,6 +323,18 @@ var solveSudoku = function(board) {
 
   function getReducedNeedsRow(needs, info) {
     const compare = [needs, info.row.intersection1Has, info.row.intersection2Has]
+    // console.log(compare);
+    return compare.reduce((prev, curr) => {
+      return prev.filter(n => {
+        if(curr.includes(n)){
+          return n
+        }
+      })
+    })
+  }
+  function getReducedNeedsCol(needs, info) {
+    const compare = [needs, info.col.intersection1Has, info.col.intersection2Has]
+    // console.log(compare);
     return compare.reduce((prev, curr) => {
       return prev.filter(n => {
         if(curr.includes(n)){
@@ -316,26 +344,56 @@ var solveSudoku = function(board) {
     })
   }
 
+  function quadRowColCheck() {
+    noValues.forEach((val, i) => {
+
+      let current = noValues[i]; //[row,col]
+
+      const info = getRelevantInfo(current)
+      let currentNeeds = getIntersectNeeds(info);
+      let reducedRowNeeds = getReducedNeedsRow(currentNeeds, info)
+      // console.log('reducedRowNeeds: ', reducedRowNeeds);
+      let reducedColNeeds = getReducedNeedsCol(currentNeeds, info)
+      // console.log('reducedColNeeds: ', reducedColNeeds);
+      
+      if(reducedRowNeeds.length === 1){
+        setBoardCoord(current, reducedRowNeeds[0], i, info.quad)
+        // console.log(noValues.length);
+      } else if (reducedColNeeds.length === 1){
+        setBoardCoord(current, reducedColNeeds[0], i, info.quad)
+      }
+  
+    }) 
+  }
+
+  function initialBlocksCheck() {
+    let start = [0,0]
+    let end = [8,8]
+    while(start[0] <= end[0] && start[1] <= end[1]){
+      blocksCheck(start)
+
+      start[0]++
+
+      if(start[0] ===9 && start[1] < 8){
+        start[1]++
+        start[0] = 0
+      }
+    }
+  }
   ///As it is solved, the info in the objects need to update.
   (function solveIt() {
-    // noValues.forEach((blank, i) => {
-    //   console.log(blank);
-    // })
-    let i = 1;
-    let current = noValues[i]; //[row,col]
-    console.log('current: ', current);
-    console.log(getRelevantInfo(current));
-    console.log('solving it', noValues.length);
-    // noValues
-    const info = getRelevantInfo(current)
-    let currentNeeds = getIntersectNeeds(info);
-    let reducedRowNeeds = getReducedNeedsRow(currentNeeds, info)
-    // console.log(reducedRowNeeds);
-    if(reducedRowNeeds.length === 1){
-      setBoardCoord(current, reducedRowNeeds[0], i, info.quad)
+      initialBlocksCheck()
+      quadRowColCheck()
+      quadRowColCheck()
+    
+
+        let i = 0;
+        let current = noValues[i];
+        console.log(current);
+      console.log(getRelevantInfo(current));
+  
       console.log(noValues.length);
-    }
-  })();
+    })();
 
 
   // for(const prop in quadrants){
