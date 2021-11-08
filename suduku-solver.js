@@ -248,14 +248,45 @@ var solveSudoku = function(board) {
 
   }
 
+  function getQuad(coord){
+    // console.log(quadrantsDefinitions);
+    for(const [key, value] of Object.entries(quadrantsDefinitions)){
+      const start = value[0]
+      const end = value[1]
+      if(coord[0] >= start[0] && coord[0] <= end[0] && coord[1] >= start[1]){
+        console.log(key, start, end, coord);
+      }
+    }
+  }
+
+  function getRelevantInfo(coord){
+    console.log(coord);
+    getQuad(coord)
+    // let quadOriginNeeds 
+
+    return {
+      quadOriginNeeds: '',
+      row: {
+        needs: [],
+        intersection1Has: [],
+        intersection2Has: [],
+      },
+      col: {
+        needs: [],
+        intersection1Has: [],
+        intersection2Has: [],
+      }     
+    }
+  }
 
   ///As it is solved, the info in the objects need to update.
   (function solveIt() {
-    noValues.forEach((blank, i) => {
-      console.log(blank);
-    })
+    // noValues.forEach((blank, i) => {
+    //   console.log(blank);
+    // })
     let i = 1;
     let current = noValues[i]; //[row,col]
+    console.log(getRelevantInfo(current));
 
     console.log('solving it');
     for(const prop in quadrants){
@@ -273,7 +304,7 @@ var solveSudoku = function(board) {
         // console.log(prop, rowsAndCols[prop]);
     }
         // console.log(noValues);
-        setBoardCoord(current, '1', i, 'bottomRight')
+        setBoardCoord(current, '3', i, 'bottomRight')
   })();
 
 
