@@ -22,7 +22,7 @@ var solveSudoku = function(board) {
   }
 
  (function getExistAndNeeded(){
-    console.log('get existing numbers in quad');
+    // console.log('get existing numbers in quad');
     for(const prop in quadrants){
       const start = quadrants[prop].definition[0]
       const end = quadrants[prop].definition[1]
@@ -63,12 +63,50 @@ var solveSudoku = function(board) {
     }
   })()
 
-  console.log(quadrants);
+  // console.log(quadrants);
   // console.log(quadrantsDefinitions);
+
+  console.log('get existing numbers in rows and col');
+
+  const rowsAndColsDefinitions = {
+   one: [0, [0,8]],
+   two: [1, [0,8]],
+   three: [2, [0,8]],
+   four: [3, [0,8]],
+   five: [4, [0,8]],
+   six: [5, [0,8]],
+   seven: [6, [0,8]],
+   eight: [7, [0,8]],
+   nine: [8, [0,8]]
+  }
+
+  const rowsAndCols = {};
+
+ (function getRowsAndCols(){
+    for(const prop in rowsAndColsDefinitions){
+      rowsAndCols[prop] = {
+        definition: rowsAndColsDefinitions[prop],
+        row: {
+          exist: [],
+          needed: []
+        },
+        col: {
+          exist: [],
+          needed: []
+        },
+        
+      }
+    }
+ })()
+
+ console.log(rowsAndCols);
 
   console.table(board)
   
 };
+
+
+
 
 
 
