@@ -254,27 +254,41 @@ var solveSudoku = function(board) {
       const start = value[0]
       const end = value[1]
       if(coord[0] >= start[0] && coord[0] <= end[0] && coord[1] >= start[1]){
-        console.log(key, start, end, coord);
+        return key
       }
     }
   }
 
   function getRelevantInfo(coord){
     console.log(coord);
-    getQuad(coord)
+    // getQuad(coord)
     // let quadOriginNeeds 
-
+    let rowIntersectQuadKeys = []
+    for(const prop in quadrants){
+      if(quadrants[prop].intersection.rows.includes(coord[0])){
+        rowIntersectQuadKeys.push(prop);
+      }
+    }
+    rowIntersectQuadKeys = rowIntersectQuadKeys.filter(key => key !== getQuad(coord))
+    let colIntersectQuadKeys = []
+    for(const prop in quadrants){
+      if(quadrants[prop].intersection.cols.includes(coord[1])){
+        colIntersectQuadKeys.push(prop);
+      }
+    }
+    colIntersectQuadKeys = colIntersectQuadKeys.filter(key => key !== getQuad(coord))
+    // console.log(rowIntersectQuadKeys);
     return {
-      quadOriginNeeds: '',
+      quadOriginNeeds: quadrants[getQuad(coord)].needed,
       row: {
-        needs: [],
-        intersection1Has: [],
-        intersection2Has: [],
+        needs: rowsAndCols[numToText_ViseVersa(coord[0])].row.needed,
+        intersection1Has: quadrants[rowIntersectQuadKeys[0]].needed,
+        intersection2Has: quadrants[rowIntersectQuadKeys[1]].needed,
       },
       col: {
-        needs: [],
-        intersection1Has: [],
-        intersection2Has: [],
+        needs: rowsAndCols[numToText_ViseVersa(coord[1])].col.needed,
+        intersection1Has: quadrants[colIntersectQuadKeys[0]].needed,
+        intersection2Has: quadrants[colIntersectQuadKeys[1]].needed,
       }     
     }
   }
@@ -284,7 +298,7 @@ var solveSudoku = function(board) {
     // noValues.forEach((blank, i) => {
     //   console.log(blank);
     // })
-    let i = 1;
+    let i = 0;
     let current = noValues[i]; //[row,col]
     console.log(getRelevantInfo(current));
 
@@ -308,8 +322,10 @@ var solveSudoku = function(board) {
   })();
 
 
+  for(const prop in quadrants){
 
-  // console.log(quadrants);
+    // console.log(prop,quadrants[prop].intersection);
+  }
   // console.log(rowsAndCols);
   console.table(board)
   
