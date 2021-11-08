@@ -260,7 +260,7 @@ var solveSudoku = function(board) {
   }
 
   function getRelevantInfo(coord){
-    console.log(coord);
+    // console.log(coord);
     // getQuad(coord)
     // let quadOriginNeeds 
     let rowIntersectQuadKeys = []
@@ -277,20 +277,31 @@ var solveSudoku = function(board) {
       }
     }
     colIntersectQuadKeys = colIntersectQuadKeys.filter(key => key !== getQuad(coord))
-    // console.log(rowIntersectQuadKeys);
+    console.log(rowIntersectQuadKeys, colIntersectQuadKeys);
     return {
       quadOriginNeeds: quadrants[getQuad(coord)].needed,
       row: {
         needs: rowsAndCols[numToText_ViseVersa(coord[0])].row.needed,
-        intersection1Has: quadrants[rowIntersectQuadKeys[0]].needed,
-        intersection2Has: quadrants[rowIntersectQuadKeys[1]].needed,
+        intersection1Has: quadrants[rowIntersectQuadKeys[0]].exist,
+        intersection2Has: quadrants[rowIntersectQuadKeys[1]].exist,
       },
       col: {
         needs: rowsAndCols[numToText_ViseVersa(coord[1])].col.needed,
-        intersection1Has: quadrants[colIntersectQuadKeys[0]].needed,
-        intersection2Has: quadrants[colIntersectQuadKeys[1]].needed,
+        intersection1Has: quadrants[colIntersectQuadKeys[0]].exist,
+        intersection2Has: quadrants[colIntersectQuadKeys[1]].exist,
       }     
     }
+  }
+
+  function getIntersectNeeds(info) {
+    const needs = [info.quadOriginNeeds, info.row.needs, info.col.needs]
+    return needs.reduce((prev, curr) => {
+      return prev.filter(n => {
+        if(curr.includes(n)){
+          return n
+        }
+      })
+    })
   }
 
   ///As it is solved, the info in the objects need to update.
@@ -298,34 +309,23 @@ var solveSudoku = function(board) {
     // noValues.forEach((blank, i) => {
     //   console.log(blank);
     // })
-    let i = 0;
+    let i = 1;
     let current = noValues[i]; //[row,col]
+    console.log('current: ', current);
     console.log(getRelevantInfo(current));
-
     console.log('solving it');
-    for(const prop in quadrants){
-      ///if current is within quadrant run checks of needed values
-      if(quadrants[prop].intersection.rows.includes(current[0])){
-        // console.log(prop, quadrants[prop].needed);
-        // console.log(numToText_ViseVersa(current[0]), rowsAndCols[numToText_ViseVersa(current[0])].row.needed);
-        // console.log(prop, quadrants[prop]);
-      }
-      // if(quadrants[prop].intersection.cols.includes(current[1])){
-        //   console.log(prop, quadrants[prop]);
-        // }
-    }
-    for(const prop in rowsAndCols){
-        // console.log(prop, rowsAndCols[prop]);
-    }
-        // console.log(noValues);
-        setBoardCoord(current, '3', i, 'bottomRight')
+
+    const info = getRelevantInfo(current)
+    console.log(getIntersectNeeds(info));
+
+        // setBoardCoord(current, '3', i, 'bottomRight')
   })();
 
 
-  for(const prop in quadrants){
+  // for(const prop in quadrants){
 
-    // console.log(prop,quadrants[prop].intersection);
-  }
+  //   console.log(prop,quadrants[prop]);
+  // }
   // console.log(rowsAndCols);
   console.table(board)
   
