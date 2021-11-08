@@ -154,11 +154,83 @@ var solveSudoku = function(board) {
     }
   })();
 
+
+  // const completeBoard = {}
+  // for(const prop in quadrants){
+  //   completeBoard[prop] = {}
+  // }
+
+
+  function numToText_ViseVersa(input){
+    if(typeof input === 'number'){
+      switch (input) {
+        case 0:
+          return 'one'
+        case 1:
+          return 'two'
+        case 2:
+          return 'three'
+        case 3:
+          return 'four'
+        case 4:
+          return 'five'
+        case 5:
+          return 'six'
+        case 6:
+          return 'seven'
+        case 7:
+          return 'eight'
+        case 8:
+          return 'nine'
+        default:
+          break;
+      }
+    }
+    if(typeof input === 'string'){
+      switch (input) {
+        case 'one':
+          return 0      
+        case 'two':
+          return 1      
+        case 'three':
+          return 2     
+        case 'four':
+          return 3      
+        case 'five':
+          return 4      
+        case 'six':
+          return 5      
+        case 'seven':
+          return 6      
+        case 'eight':
+          return 7      
+        case 'nine':
+          return 8      
+        default:
+          break;
+      }
+    }
+  }
+
+
+  ///As it is solved, the info in the objects need to update.
   (function solveIt() {
+    let current = [0,0]; //[row,col]
+
     console.log('solving it');
     for(const prop in quadrants){
-      console.log(prop, quadrants[prop]);
+      ///if current is within quadrant run checks of needed values
+      if(quadrants[prop].intersection.rows.includes(current[0])){
+        console.log(prop, quadrants[prop].needed);
+        console.log(numToText_ViseVersa(current[0]), rowsAndCols[numToText_ViseVersa(current[0])].row.needed);
+      }
+      // if(quadrants[prop].intersection.cols.includes(current[1])){
+      //   console.log(prop, quadrants[prop]);
+      // }
     }
+    // for(const prop in rowsAndCols){
+    //   console.log(prop, rowsAndCols[prop]);
+    // }
   })();
 
 
