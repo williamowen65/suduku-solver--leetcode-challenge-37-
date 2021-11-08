@@ -212,10 +212,14 @@ var solveSudoku = function(board) {
     }
   }
 
+  function setBoardCoord(coord, val){
+    board[coord[0]][coord[1]] = val
+  }
+
 
   ///As it is solved, the info in the objects need to update.
   (function solveIt() {
-    let current = [0,0]; //[row,col]
+    let current = [0,4]; //[row,col]
 
     console.log('solving it');
     for(const prop in quadrants){
@@ -231,13 +235,14 @@ var solveSudoku = function(board) {
     // for(const prop in rowsAndCols){
     //   console.log(prop, rowsAndCols[prop]);
     // }
+    setBoardCoord(current, '12')
   })();
 
 
 
   // console.log(quadrants);
   // console.log(rowsAndCols);
-  // console.table(board)
+  console.table(board)
   
 };
 
