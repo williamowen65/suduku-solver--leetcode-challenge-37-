@@ -131,16 +131,15 @@ var solveSudoku = function(board) {
         })
       }
 
-
-
       //get row
-      console.log(prop);
-      console.log('row: ', rowsAndCols[prop].row);
-      console.log('col: ', rowsAndCols[prop].col);
+      // console.log(prop);
+      // console.log('row: ', rowsAndCols[prop].row);
+      // console.log('col: ', rowsAndCols[prop].col);
     }
   })()
 
-
+  console.log(quadrants);
+  console.log(rowsAndCols);
   console.table(board)
   
 };
