@@ -136,10 +136,16 @@ var solveSudoku = function(board) {
       // console.log('row: ', rowsAndCols[prop].row);
       // console.log('col: ', rowsAndCols[prop].col);
     }
-  })()
+  })();
 
-  console.log(quadrants);
-  console.log(rowsAndCols);
+  (function solveIt() {
+    console.log('solving it');
+  })();
+
+
+
+  // console.log(quadrants);
+  // console.log(rowsAndCols);
   console.table(board)
   
 };
