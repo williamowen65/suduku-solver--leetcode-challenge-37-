@@ -239,6 +239,13 @@ var solveSudoku = function(board) {
     // console.log(quadrants[quad]);
 
     //update row/col
+    // console.log(coord[0], numToText_ViseVersa(coord[0]));
+    rowsAndCols[numToText_ViseVersa(coord[0])].row.exist.push(val)
+    rowsAndCols[numToText_ViseVersa(coord[0])].row.needed.splice(rowsAndCols[numToText_ViseVersa(coord[0])].row.needed.indexOf(val), 1)
+    
+    rowsAndCols[numToText_ViseVersa(coord[1])].col.exist.push(val)
+    rowsAndCols[numToText_ViseVersa(coord[1])].col.needed.splice(rowsAndCols[numToText_ViseVersa(coord[1])].col.needed.indexOf(val), 1)
+
   }
 
 
@@ -253,15 +260,15 @@ var solveSudoku = function(board) {
       if(quadrants[prop].intersection.rows.includes(current[0])){
         // console.log(prop, quadrants[prop].needed);
         // console.log(numToText_ViseVersa(current[0]), rowsAndCols[numToText_ViseVersa(current[0])].row.needed);
-        console.log(prop, quadrants[prop]);
+        // console.log(prop, quadrants[prop]);
       }
       // if(quadrants[prop].intersection.cols.includes(current[1])){
         //   console.log(prop, quadrants[prop]);
         // }
-      }
-      // for(const prop in rowsAndCols){
-        //   console.log(prop, rowsAndCols[prop]);
-        // }
+    }
+    for(const prop in rowsAndCols){
+        console.log(prop, rowsAndCols[prop]);
+    }
         // console.log(noValues);
         setBoardCoord(current, '1', i, 'bottomRight')
   })();
